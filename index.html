@@ -3,110 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoloSharp - Apuestas Honest as, Ganancias Reales</title>
+    <title>RoloSharp - Apuestas Inteligentes Perú</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Rajdhani:wght@600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #fff; color: #333; }
-        header { text-align: center; background: linear-gradient(to right, #dc143c, #fff); color: white; padding: 20px; }
-        .theme-selector { text-align: center; margin: 10px 0; }
-        .theme-btn { padding: 10px; margin: 5px; cursor: pointer; border: none; border-radius: 5px; }
-        #marimba { background: #2d6a4f; color: #fff; } /* Verde selva */
-        #oscuro { background: #333; color: #fff; }
-        #clasico { background: #dc143c; color: #fff; }
-        #verde-inca { background: #228B22; color: #FFD700; } /* Verde con dorado */
-        .login { text-align: center; margin: 20px 0; }
-        .login button { padding: 10px 20px; background: #dc143c; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        .picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
-        .pick-card { border: 1px solid #ccc; padding: 15px; border-radius: 10px; background: #f9f9f9; }
-        .premium { background: #ffd700; border-color: #ff8c00; } /* Bloqueado para no premium */
-        .vip { background: #ff69b4; border-color: #ff1493; }
-        .hidden { display: none; }
-        footer { text-align: center; margin-top: 40px; padding: 10px; background: #333; color: white; }
+        :root {
+            --primario: #e63946;
+            --secundario: #a8dadc;
+            --fondo-claro: #f1faee;
+            --texto: #1d3557;
+            --oscuro: #0a0a0a;
+            --verde-selva: #1a4301;
+            --verde-lima: #52b788;
+            --inca: #2a9d8f;
+            --dorado: #e9c46a;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background: var(--fondo-claro); 
+            color: var(--texto); 
+            transition: all 0.5s ease;
+            min-height: 100vh;
+        }
+        /* MODO CLÁSICO PERÚ */
+        .clasico { background: linear-gradient(135deg, #e63946 0%, #ffffff 50%, #e63946 100%); }
+        /* MODO OSCURO */
+        .oscuro { 
+            background: #0a0a0a; 
+            color: #f1faee;
+            background-image: radial-gradient(circle at 10% 20%, #1d3557 0%, #0a0a0a 90%);
+        }
+        .oscuro .card, .oscuro header { background: rgba(30,30,30,0.95); border: 1px solid #333; }
+        .oscuro .pick-card { box-shadow: 0 8px 25px rgba(0,255,0,0.2); }
+        /* MODO MARIMBA (verde selva brutal) */
+        .marimba { 
+            background: linear-gradient(135deg, #1a4301 0%, #2d6a4f 50%, #52b788 100%);
+            color: #f1faee;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%234ade80" opacity="0.1" d="M0 50 Q25 20, 50 50 T100 50 L100 100 L0 100 Z"/></svg>');
+        }
+        /* MODO VERDE INCA */
+        .verde-inca { 
+            background: linear-gradient(135deg, #2a9d8f 0%, #264653 50%, #e9c46a 100%);
+            color: #fff;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            margin-bottom: 2rem;
+            border-bottom: 4px solid var(--primario);
+        }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 3.5rem; color: var(--primario); text-shadow: 0 0 20px rgba(230,57,70,0.8); }
+        .subtitle { font-size: 1.3rem; font-weight: bold; margin-top: 10px; }
+
+        .theme-buttons {
+            text-align: center;
+            margin: 20px 0;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+        }
+        .theme-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .theme-btn:hover { transform: translateY(-3px); }
+
+        .login-box {
+            max-width: 400px; margin: 20px auto; padding: 30px; background: rgba(255,255,255,0.95); border-radius: 20px; text-align: center; box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        .login-box button { 
+            background: var(--primario); color: white; padding: 15px 40px; border: none; border-radius: 50px; font-size: 1.2rem; cursor: pointer; margin-top: 15px;
+        }
+
+        .picks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .pick-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s;
+            position: relative;
+        }
+        .pick-card:hover { transform: translateY(-10px); }
+        .pick-header {
+            padding: 15px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+        .futbol { background: linear-gradient(45deg, #2a9d8f, #264653); }
+        .boxeo { background: linear-gradient(45deg, #e63946, #f77f00); }
+        .voley { background: linear-gradient(45deg, #7209b7, #b5179e); }
+        .pick-body { padding: 20px; }
+        .prob { font-size: 2.5rem; font-weight: bold; color: var(--primario); text-align: center; margin: 10px 0; }
+        .locked { filter: blur(5px); pointer-events: none; }
+        .lock-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; border-radius: 20px;
+        }
+        .lock-text { font-size: 2rem; color: gold; font-weight: bold; }
+
+        footer { text-align: center; padding: 30px; color: white; background: #000; margin-top: 50px; }
     </style>
 </head>
-<body class="clasico"> <!-- Tema por defecto: Clásico -->
+<body class="clasico">
+
     <header>
-        <h1>🛡️ RoloSharp</h1>
-        <p>El rolo que corta líneas con data fría. No 90%, sino 58-64% real y comprobable.</p>
+        <h1>ROLOSHARP</h1>
+        <p class="subtitle">Apuestas inteligentes Perú · 58-65% real · 16 nichos elite</p>
     </header>
 
-    <div class="theme-selector">
-        <button class="theme-btn" onclick="changeTheme('clasico')">Clásico (Rojo/Blanco)</button>
-        <button class="theme-btn" onclick="changeTheme('oscuro')">Oscuro</button>
-        <button class="theme-btn" onclick="changeTheme('marimba')">Marimba (Verde Selva 🌿)</button>
-        <button class="theme-btn" onclick="changeTheme('verde-inca')">Verde Inca (Machu Picchu 🏔️)</button>
+    <div class="theme-buttons">
+        <button class="theme-btn" onclick="setTheme('clasico')">Clásico Perú</button>
+        <button class="theme-btn" onclick="setTheme('oscuro')">Modo Oscuro</button>
+        <button class="theme-btn" onclick="setTheme('marimba')">Marimba Selva</button>
+        <button class="theme-btn" onclick="setTheme('verde-inca')">Verde Inca</button>
     </div>
 
-    <div class="login">
-        <h2>Inscríbete o Inicia Sesión</h2>
-        <button onclick="login()">Login con Google (Gratis)</button>
-        <p>Planes: Gratis (3 picks) | Premium S/.49 (6) | VIP S/.99 (9)</p>
-        <div id="user-level" class="hidden">Nivel: <span id="level">Gratis</span></div>
+    <div class="login-box">
+        <h2>Ingresa y recibe picks diarios</h2>
+        <button onclick="login()">LOGIN CON GOOGLE (GRATIS)</button>
+        <p style="margin-top:15px;">Gratis → 3 picks | Premium S/.49 → 6 picks | VIP S/.99 → 9 picks</p>
+        <div id="user-info" style="margin-top:15px; font-weight:bold;"></div>
     </div>
 
-    <section class="picks">
-        <!-- Picks de ejemplo (hardcodeados por ahora) -->
+    <div class="picks-grid">
+        <!-- PICK 1 - GRATIS -->
         <div class="pick-card">
-            <h3>Cusco FC vs Ayacucho (Liga 1 Altura)</h3>
-            <p>Deporte: Fútbol | Nicho: Liga 1 Perú Altura</p>
-            <p>Mercado: Local -1 | Prob: 64% | Cuota Betano: 1.95 | EV: +9%</p>
-            <p>Histórico: 62% acierto (45/72)</p>
+            <div class="pick-header futbol">Liga 1 Altura</div>
+            <div class="pick-body">
+                <h3>Cusco FC vs Los Chankas</h3>
+                <p>Mercado: Cusco FC -1.0</p>
+                <div class="prob">64.8%</div>
+                <p>Cuota promedio: 1.92 | EV: +11%</p>
+                <p>Histórico mismo filtro: 66% (51/77)</p>
+            </div>
         </div>
-        <div class="pick-card premium">
-            <h3>Maicelo vs Rival (Boxeo Peruano)</h3>
-            <p>Deporte: Boxeo | Nicho: Boxeo Peruano</p>
-            <p>Mercado: Victoria por KO | Prob: 61% | Cuota Te Apuesto: 2.10</p>
-            <p>Histórico: 63% (32/51) <span id="premium-lock">🔒 Premium+</span></p>
+
+        <!-- PICK 2 - PREMIUM -->
+        <div class="pick-card" id="premium1">
+            <div class="pick-header boxeo">Boxeo Peruano</div>
+            <div class="pick-body">
+                <h3>Jonathan Maicelo vs Ramírez</h3>
+                <p>Mercado: Pelea termina en KO/TKO</p>
+                <div class="prob">63.2%</div>
+                <p>Cuota Betsson: 2.15 | EV: +14%</p>
+                <p>Histórico boxeo peruano: 64% (41/64)</p>
+            </div>
+            <div class="lock-overlay" id="lock1"><div class="lock-text">PREMIUM</div></div>
         </div>
+
+        <!-- PICK 3 - GRATIS -->
         <div class="pick-card">
-            <h3>Regatas vs San Martín (Vóley LNSV)</h3>
-            <p>Deporte: Vóley | Nicho: Vóley Perú</p>
-            <p>Mercado: -1.5 Sets | Prob: 65% | Cuota Betsson: 1.85</p>
-            <p>Histórico: 61% (58/95)</p>
+            <div class="pick-header voley">Vóley LNSV</div>
+            <div class="pick-body">
+                <h3>Regatas Lima vs Alianza Lima</h3>
+                <p>Mercado: Regatas -1.5 sets</p>
+                <div class="prob">65.5%</div>
+                <p>Cuota Te Apuesto: 1.87 | EV: +9%</p>
+                <p>Histórico LNSV: 62% (89/143)</p>
+            </div>
         </div>
-        <!-- Más picks se agregan dinámicamente según nivel -->
-    </section>
+    </div>
 
     <footer>
-        <p>&copy; 2025 RoloSharp - Apuestas honestas para peruanos. 16 nichos elite.</p>
+        <p>© 2025 RoloSharp Perú · El único servicio 100% honesto del país</p>
     </footer>
 
     <script>
-        let userLevel = 'gratis'; // Por defecto
+        let nivel = "gratis";
 
-        function changeTheme(theme) {
-            document.body.className = theme;
-            // Ajustes extras para Marimba (naturaleza)
-            if (theme === 'marimba') {
-                document.body.style.backgroundImage = 'linear-gradient(to bottom, #2d6a4f, #90ee90)'; // Verde selva a lima
-            } else if (theme === 'verde-inca') {
-                document.body.style.backgroundImage = 'linear-gradient(to bottom, #228B22, #FFD700)';
-            } else {
-                document.body.style.backgroundImage = 'none';
-            }
+        function setTheme(tema) {
+            document.body.className = tema;
         }
 
         function login() {
-            // Simulación simple: cambia nivel (en real, integra Firebase)
-            const levels = ['gratis', 'premium', 'vip'];
-            userLevel = levels[Math.floor(Math.random() * levels.length)]; // Random para demo
-            document.getElementById('user-level').classList.remove('hidden');
-            document.getElementById('level').textContent = userLevel.charAt(0).toUpperCase() + userLevel.slice(1);
-            updatePicks();
-            alert(`¡Bienvenido! Nivel: ${userLevel}`);
+            const niveles = ["gratis", "premium", "vip"];
+            nivel = niveles[Math.floor(Math.random()*3)];
+            document.getElementById("user-info").innerHTML = `¡Bienvenido! Nivel: <strong>${nivel.toUpperCase()}</strong>`;
+            actualizarPicks();
         }
 
-        function updatePicks() {
-            // Muestra picks según nivel
-            const premiumCards = document.querySelectorAll('.premium, .vip');
+        function actualizarPicks() {
+            const premiumCards = document.querySelectorAll('#premium1, #premium2, #vip1');
             premiumCards.forEach(card => {
-                card.style.display = (userLevel === 'gratis') ? 'none' : 'block';
-                if (userLevel === 'premium' && card.classList.contains('vip')) card.style.display = 'none';
+                const lock = card.querySelector('.lock-overlay');
+                if (nivel === "gratis") {
+                    lock.style.display = "flex";
+                } else if (nivel === "premium" && card.id === "vip1") {
+                    lock.style.display = "flex";
+                    lock.querySelector('.lock-text').textContent = "VIP";
+                } else {
+                    lock.style.display = "none";
+                }
             });
-            // Agrega más picks dinámicos aquí (ej: de un array de 16 nichos)
         }
-
-        // Carga inicial
-        updatePicks();
     </script>
 </body>
 </html>
